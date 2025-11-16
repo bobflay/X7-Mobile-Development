@@ -581,10 +581,1507 @@ flutter run -d ios             # Run on iOS simulator (macOS only)</pre>
                 <p style="margin: 5px 0;">Implement <strong>Codemagic</strong> or <strong>GitHub Actions</strong> for automated builds in production</p>
             </div>
         </div>
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2>Understanding the Default Flutter App Code</h2>
+
+            <p>When you create a new Flutter app with <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">flutter create</code>, it generates a sample counter app. Let's break down the code structure:</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📁 Project Structure</h3>
+                <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;">my_first_app/
+├── lib/
+│   └── main.dart          ← Your Dart code lives here
+├── android/               ← Android-specific files
+├── ios/                   ← iOS-specific files
+├── web/                   ← Web-specific files
+├── test/                  ← Unit and widget tests
+├── pubspec.yaml           ← Dependencies and app configuration
+└── README.md</pre>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📝 Main.dart - The Entry Point</h3>
+
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">1. Main Function</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>void main() {
+  runApp(const MyApp());
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        • <strong>main()</strong> - Entry point of every Dart/Flutter app<br/>
+                        • <strong>runApp()</strong> - Takes a Widget and makes it the root of the widget tree
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">2. MyApp Widget (Stateless)</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        • <strong>StatelessWidget</strong> - Widget that doesn't change over time<br/>
+                        • <strong>MaterialApp</strong> - Root widget that provides Material Design<br/>
+                        • <strong>theme</strong> - Defines app-wide styling and colors<br/>
+                        • <strong>home</strong> - The default route (first screen)
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">3. MyHomePage Widget (Stateful)</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+
+  @override
+  State&lt;MyHomePage&gt; createState() => _MyHomePageState();
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        • <strong>StatefulWidget</strong> - Widget that can change state over time<br/>
+                        • <strong>title</strong> - Immutable property passed from parent<br/>
+                        • <strong>createState()</strong> - Creates mutable state object
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+                    <h4 style="margin-top: 0;">4. State Class with Counter Logic</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0; overflow-x: auto;"><code>class _MyHomePageState extends State&lt;MyHomePage&gt; {
+  int _counter = 0;  // State variable
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;  // Update state
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: &lt;Widget&gt;[
+            const Text('You have pushed the button this many times:'),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        • <strong>_counter</strong> - Private state variable (underscore makes it private)<br/>
+                        • <strong>setState()</strong> - Tells Flutter to rebuild the widget with new state<br/>
+                        • <strong>Scaffold</strong> - Provides basic Material Design layout structure<br/>
+                        • <strong>AppBar</strong> - Top app bar with title<br/>
+                        • <strong>body</strong> - Main content area with centered column<br/>
+                        • <strong>FloatingActionButton</strong> - Circular button that calls _incrementCounter
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎯 Key Concepts</h4>
+                <p style="margin: 5px 0;">✅ <strong>Everything is a Widget</strong> - UI is built by composing widgets</p>
+                <p style="margin: 5px 0;">✅ <strong>Stateless vs Stateful</strong> - Choose based on whether data changes</p>
+                <p style="margin: 5px 0;">✅ <strong>setState()</strong> - Only way to update UI in StatefulWidget</p>
+                <p style="margin: 5px 0;">✅ <strong>Widget tree</strong> - Widgets are nested to create complex UIs</p>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2>Flutter Layout Fundamentals</h2>
+
+            <p>Understanding Flutter's layout system is essential for building beautiful UIs. Everything in Flutter is a widget, including layout models themselves.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🎯 Core Layout Mechanism</h3>
+                <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        <strong>Key Principle:</strong> Flutter's layout mechanism is fundamentally widget-based. Almost everything is a widget—even layout models are widgets!
+                    </p>
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        <strong>Building Strategy:</strong> Compose simple widgets to build more complex widgets through hierarchical nesting and property configuration.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📦 Widget Categories</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                        <h4 style="margin-top: 0; color: #16a34a;">Single-Child Widgets</h4>
+                        <p style="font-size: 0.9em; margin: 5px 0;">Contain and layout one child widget</p>
+                        <ul style="font-size: 0.9em; line-height: 1.8; margin: 10px 0;">
+                            <li><strong>Center</strong> - Centers child widget</li>
+                            <li><strong>Container</strong> - Adds padding, margins, borders, background</li>
+                            <li><strong>Expanded</strong> - Fills available space</li>
+                            <li><strong>SizedBox</strong> - Fixed size or spacing</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                        <h4 style="margin-top: 0; color: #dc2626;">Multi-Child Widgets</h4>
+                        <p style="font-size: 0.9em; margin: 5px 0;">Arrange multiple children in specific patterns</p>
+                        <ul style="font-size: 0.9em; line-height: 1.8; margin: 10px 0;">
+                            <li><strong>Row</strong> - Horizontal arrangement</li>
+                            <li><strong>Column</strong> - Vertical arrangement</li>
+                            <li><strong>Stack</strong> - Overlapping widgets</li>
+                            <li><strong>ListView</strong> - Scrollable column</li>
+                            <li><strong>GridView</strong> - Scrollable grid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🔧 Layout Building Process</h3>
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px;">
+                    <p style="font-size: 0.9em; margin: 5px 0;"><strong>Step 1:</strong> Select a layout widget (Row, Column, Stack, etc.)</p>
+                    <p style="font-size: 0.9em; margin: 5px 0;"><strong>Step 2:</strong> Create a visible widget (Text, Image, Icon)</p>
+                    <p style="font-size: 0.9em; margin: 5px 0;"><strong>Step 3:</strong> Add the visible widget to the layout widget</p>
+                    <p style="font-size: 0.9em; margin: 5px 0;"><strong>Step 4:</strong> Add the layout widget to the page</p>
+                    <p style="font-size: 0.9em; margin: 5px 0;"><strong>Step 5:</strong> Run your app and see the result!</p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 Remember</h4>
+                <p style="margin: 5px 0;">✅ Rows and columns can nest infinitely for complex layouts</p>
+                <p style="margin: 5px 0;">✅ Use alignment properties to control widget positioning</p>
+                <p style="margin: 5px 0;">✅ Container is your Swiss Army knife for styling</p>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>Flutter Layout: Key Concepts</h2>
+
+            <p>Master these fundamental concepts to create any layout you can imagine in Flutter.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📏 Alignment & Positioning</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Row & Column Alignment Properties</h4>
+
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-size: 0.9em; margin: 5px 0;"><strong>mainAxisAlignment:</strong> Controls positioning along the main axis</p>
+                        <ul style="font-size: 0.85em; line-height: 1.6;">
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.start</code> - Align at the start (left for Row, top for Column)</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.center</code> - Center children</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.end</code> - Align at the end (right for Row, bottom for Column)</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.spaceBetween</code> - Space evenly between children</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.spaceAround</code> - Space evenly with half-space at edges</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisAlignment.spaceEvenly</code> - Equal space between and at edges</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 0.9em; margin: 5px 0;"><strong>crossAxisAlignment:</strong> Controls positioning along the cross axis</p>
+                        <ul style="font-size: 0.85em; line-height: 1.6;">
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">CrossAxisAlignment.start</code> - Align at the start (top for Row, left for Column)</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">CrossAxisAlignment.center</code> - Center children</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">CrossAxisAlignment.end</code> - Align at the end (bottom for Row, right for Column)</li>
+                            <li><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">CrossAxisAlignment.stretch</code> - Stretch to fill cross axis</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <p style="font-size: 0.85em; margin: 5px 0;">
+                            <strong>💡 Axis Direction:</strong><br/>
+                            • <strong>Row:</strong> Main axis = horizontal (left to right), Cross axis = vertical (top to bottom)<br/>
+                            • <strong>Column:</strong> Main axis = vertical (top to bottom), Cross axis = horizontal (left to right)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📐 Sizing with Expanded & Flexible</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">Expanded Widget</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Row(
+  children: [
+    Expanded(
+      flex: 2,  // Takes 2/3 of available space
+      child: Container(color: Colors.blue),
+    ),
+    Expanded(
+      flex: 1,  // Takes 1/3 of available space
+      child: Container(color: Colors.red),
+    ),
+  ],
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        • <strong>Expanded</strong> fills available space in Row/Column<br/>
+                        • <strong>flex</strong> property controls proportional spacing (default = 1)<br/>
+                        • Children share space based on their flex values
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📦 Packing & Nesting</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>mainAxisSize:</strong> Controls how much space Row/Column occupies<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisSize.max</code> - Takes all available space (default)<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MainAxisSize.min</code> - Takes only space needed by children
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Column(
+  mainAxisSize: MainAxisSize.min,  // Wraps tightly around children
+  children: [
+    Text('Compact'),
+    Text('Layout'),
+  ],
+)</code></pre>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎨 Layout Best Practices</h4>
+                <p style="margin: 5px 0;">✅ Use Expanded to prevent overflow errors</p>
+                <p style="margin: 5px 0;">✅ Nest Row and Column for complex layouts</p>
+                <p style="margin: 5px 0;">✅ Use SizedBox for consistent spacing</p>
+                <p style="margin: 5px 0;">✅ Set mainAxisSize.min to create compact layouts</p>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>Common Flutter Layout Widgets</h2>
+
+            <p>These essential widgets will help you build any UI layout in Flutter.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📦 Container - The Swiss Army Knife</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        Container is the most versatile layout widget. It can add padding, margins, borders, background colors, constraints, and transformations.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>Container(
+  padding: EdgeInsets.all(16),        // Internal spacing
+  margin: EdgeInsets.all(8),          // External spacing
+  decoration: BoxDecoration(
+    color: Colors.blue,               // Background color
+    borderRadius: BorderRadius.circular(12),  // Rounded corners
+    border: Border.all(color: Colors.black, width: 2),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey,
+        blurRadius: 5,
+        offset: Offset(2, 2),
+      ),
+    ],
+  ),
+  child: Text('Styled Container'),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Common uses:</strong> Adding spacing, backgrounds, borders, shadows, and constraints to widgets
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🃏 Card - Material Design Container</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        Card provides a Material Design card with rounded corners and elevation shadow.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Card(
+  elevation: 4,              // Shadow depth
+  margin: EdgeInsets.all(8), // Space around card
+  child: Padding(
+    padding: EdgeInsets.all(16),
+    child: Text('Card Content'),
+  ),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Common uses:</strong> List items, profile cards, content containers
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📋 ListTile - Specialized Row</h3>
+
+                <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        ListTile is a specialized row widget designed for text and icons in lists.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>ListTile(
+  leading: Icon(Icons.person),     // Icon at the start
+  title: Text('John Doe'),         // Primary text
+  subtitle: Text('Developer'),     // Secondary text
+  trailing: Icon(Icons.arrow_forward),  // Icon at the end
+  onTap: () {
+    // Handle tap
+  },
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Common uses:</strong> Menu items, contact lists, settings options
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📜 ListView - Scrollable Column</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        ListView creates a scrollable list of widgets, perfect for long content.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>ListView(
+  children: [
+    ListTile(title: Text('Item 1')),
+    ListTile(title: Text('Item 2')),
+    ListTile(title: Text('Item 3')),
+  ],
+)
+
+// Or use ListView.builder for long lists
+ListView.builder(
+  itemCount: 100,
+  itemBuilder: (context, index) {
+    return ListTile(title: Text('Item $index'));
+  },
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Common uses:</strong> Message lists, product catalogs, settings screens
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🚀 Quick Reference</h4>
+                <p style="margin: 5px 0;">📦 <strong>Container</strong> - Styling and spacing</p>
+                <p style="margin: 5px 0;">🃏 <strong>Card</strong> - Material design containers</p>
+                <p style="margin: 5px 0;">📋 <strong>ListTile</strong> - Quick icon + text rows</p>
+                <p style="margin: 5px 0;">📜 <strong>ListView</strong> - Scrollable lists</p>
+                <p style="margin: 5px 0;">🎯 <strong>GridView</strong> - Scrollable grids</p>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>Widgets We'll Use: Card Widget</h2>
+
+            <p>Before building our Contact Card, let's understand each widget and property we'll use. We'll start with the Card widget.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🃏 What is a Card?</h3>
+
+                <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        <strong>Card</strong> is a Material Design widget that represents a sheet of material with slightly rounded corners and a shadow. It's perfect for grouping related information.
+                    </p>
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        Think of it as a physical card - like a business card or playing card - floating above the surface with a shadow.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📋 Card Properties</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">elevation</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Card(
+  elevation: 8,  // Controls shadow depth
+  child: Text('Content'),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Controls the size of the shadow beneath the card<br/>
+                        <strong>Values:</strong> 0 (no shadow) to 24 (very large shadow)<br/>
+                        <strong>Common values:</strong> 2 (subtle), 4 (standard), 8 (prominent)<br/>
+                        <strong>Why use it:</strong> Creates depth and makes the card stand out from the background
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">margin</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Card(
+  margin: EdgeInsets.all(20),  // Space around the card
+  child: Text('Content'),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Adds empty space around the outside of the card<br/>
+                        <strong>EdgeInsets.all(20):</strong> 20 pixels on all four sides<br/>
+                        <strong>Other options:</strong><br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">EdgeInsets.symmetric(horizontal: 20, vertical: 10)</code> - Different horizontal/vertical<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">EdgeInsets.only(left: 10, top: 20)</code> - Specific sides<br/>
+                        <strong>Why use it:</strong> Prevents the card from touching screen edges
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">child</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Card(
+  child: Padding(
+    padding: EdgeInsets.all(40),
+    child: Column(
+      children: [/* widgets */],
+    ),
+  ),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> The content that appears inside the card<br/>
+                        <strong>Can be:</strong> Any widget (Text, Column, Row, Image, etc.)<br/>
+                        <strong>Why use it:</strong> Defines what the card contains
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 Card Quick Facts</h4>
+                <p style="margin: 5px 0;">✅ Automatically has rounded corners (4px radius)</p>
+                <p style="margin: 5px 0;">✅ Default background is white</p>
+                <p style="margin: 5px 0;">✅ Can contain any widget as a child</p>
+                <p style="margin: 5px 0;">✅ Perfect for displaying grouped information</p>
+            </div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide">
+            <h2>Widgets We'll Use: CircleAvatar</h2>
+
+            <p>CircleAvatar creates circular profile images or icons - perfect for user profiles and contact cards.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>👤 What is CircleAvatar?</h3>
+
+                <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        <strong>CircleAvatar</strong> is a widget that displays a circle, typically containing a profile picture, icon, or initials. It automatically handles the circular clipping.
+                    </p>
+                    <p style="font-size: 0.95em; margin: 10px 0;">
+                        Think of it as a profile picture in any social media app - always circular and centered.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📋 CircleAvatar Properties</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">radius</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>CircleAvatar(
+  radius: 60,  // Size of the circle
+  child: Icon(Icons.person),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Sets the radius of the circle (half the diameter)<br/>
+                        <strong>Formula:</strong> Diameter = radius × 2 (radius: 60 = 120px circle)<br/>
+                        <strong>Common values:</strong> 30 (small), 50 (medium), 60-80 (large)<br/>
+                        <strong>Why use it:</strong> Controls how big the avatar appears
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">backgroundColor</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>CircleAvatar(
+  backgroundColor: Colors.deepPurple,  // Circle background color
+  child: Icon(Icons.person, color: Colors.white),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Sets the background color of the circle<br/>
+                        <strong>Use case:</strong> When using icons or text instead of images<br/>
+                        <strong>Colors class:</strong> Provides predefined colors like Colors.blue, Colors.red<br/>
+                        <strong>Why use it:</strong> Creates contrast for icons/text or matches your theme
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">child</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>CircleAvatar(
+  child: Icon(
+    Icons.person,
+    size: 80,
+    color: Colors.white,
+  ),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> The content displayed inside the circle<br/>
+                        <strong>Can be:</strong> Icon, Text (initials), or Image<br/>
+                        <strong>Icon widget:</strong> Displays Material icons<br/>
+                        <strong>Icons.person:</strong> A person silhouette icon<br/>
+                        <strong>size property:</strong> Makes the icon larger/smaller<br/>
+                        <strong>Why use it:</strong> Shows the actual profile content
+                    </p>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                    <h4 style="margin-top: 0; color: #16a34a;">Alternative: Using Images</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>// With backgroundImage (better for real photos)
+CircleAvatar(
+  radius: 60,
+  backgroundImage: NetworkImage('https://example.com/photo.jpg'),
+)
+
+// With AssetImage (for local images)
+CircleAvatar(
+  radius: 60,
+  backgroundImage: AssetImage('assets/profile.jpg'),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>backgroundImage:</strong> Directly sets an image as the background (no child needed)<br/>
+                        <strong>NetworkImage:</strong> Loads image from internet<br/>
+                        <strong>AssetImage:</strong> Loads image from project assets folder
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 CircleAvatar Tips</h4>
+                <p style="margin: 5px 0;">✅ Automatically clips content to circular shape</p>
+                <p style="margin: 5px 0;">✅ Icon size should be smaller than radius × 2</p>
+                <p style="margin: 5px 0;">✅ Use backgroundColor when not using images</p>
+                <p style="margin: 5px 0;">✅ Perfect for profile pictures and user avatars</p>
+            </div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide">
+            <h2>Widgets We'll Use: Text & SizedBox</h2>
+
+            <p>Text displays content, and SizedBox creates spacing - two essential widgets for any Flutter UI.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>✍️ Text Widget</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Basic Text</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Text('Your Name')</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Displays the string 'Your Name' on screen<br/>
+                        <strong>First parameter:</strong> The text to display (required)<br/>
+                        <strong>Default styling:</strong> Uses theme's default text style
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">TextStyle - Customizing Appearance</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Text(
+  'Your Name',
+  style: TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+    color: Colors.deepPurple,
+    letterSpacing: 1.5,
+  ),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>style property:</strong> Takes a TextStyle object to customize appearance<br/>
+                        <strong>fontSize:</strong> Size of the text in logical pixels (default is around 14)<br/>
+                        <strong>fontWeight:</strong> How thick the text appears<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">FontWeight.normal</code> - Regular text (default)<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">FontWeight.bold</code> - Bold text<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">FontWeight.w100 to w900</code> - Specific weights (100=thin, 900=black)<br/>
+                        <strong>color:</strong> Text color using Colors class<br/>
+                        <strong>letterSpacing:</strong> Space between letters (positive = wider, negative = tighter)
+                    </p>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                    <h4 style="margin-top: 0; color: #16a34a;">More TextStyle Properties</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>TextStyle(
+  fontStyle: FontStyle.italic,     // Italic text
+  decoration: TextDecoration.underline,  // Underline
+  decorationColor: Colors.red,     // Underline color
+  height: 1.5,                     // Line height multiplier
+)</code></pre>
+                </div>
+
+                <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <h4 style="margin-top: 0; color: #2563eb;">Using Theme Colors</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Text(
+  'Title',
+  style: Theme.of(context).textTheme.headlineMedium,
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Theme.of(context):</strong> Accesses app-wide theme settings<br/>
+                        <strong>textTheme:</strong> Predefined text styles from theme<br/>
+                        <strong>Benefits:</strong> Consistent styling, automatic dark mode support
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📏 SizedBox Widget</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Creating Spacing</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Column(
+  children: [
+    Text('First'),
+    SizedBox(height: 20),  // 20 pixels of vertical space
+    Text('Second'),
+  ],
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>What it does:</strong> Creates an empty box with fixed dimensions<br/>
+                        <strong>height:</strong> Vertical size (for spacing in Column)<br/>
+                        <strong>width:</strong> Horizontal size (for spacing in Row)<br/>
+                        <strong>Why use it:</strong> Cleaner than Padding for simple spacing<br/>
+                        <strong>Best practice:</strong> Use SizedBox instead of Container for pure spacing
+                    </p>
+                </div>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h4 style="margin-top: 0; color: #dc2626;">SizedBox with Child</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>SizedBox(
+  width: 200,
+  height: 100,
+  child: Container(color: Colors.blue),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>With child:</strong> Constrains child to exact dimensions<br/>
+                        <strong>Without child:</strong> Just creates empty space
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 Quick Reference</h4>
+                <p style="margin: 5px 0;">✅ <strong>Text:</strong> Displays text with customizable styling</p>
+                <p style="margin: 5px 0;">✅ <strong>TextStyle:</strong> Controls font size, weight, color, spacing</p>
+                <p style="margin: 5px 0;">✅ <strong>SizedBox:</strong> Creates fixed spacing or constraints</p>
+                <p style="margin: 5px 0;">✅ Use SizedBox(height: X) for vertical spacing in Column</p>
+            </div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide">
+            <h2>Widgets We'll Use: Divider & Container</h2>
+
+            <p>Divider creates visual separators, and Container is our most versatile layout widget.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📏 Divider Widget</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">What is Divider?</h4>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Divider</strong> is a horizontal line used to separate content sections. It's like a visual "break" between groups of information.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Column(
+  children: [
+    Text('Section 1'),
+    Divider(),  // Simple horizontal line
+    Text('Section 2'),
+  ],
+)</code></pre>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Divider Properties</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Divider(
+  height: 20,                    // Total vertical space
+  thickness: 2,                  // Line thickness
+  color: Colors.deepPurple[100], // Line color
+  indent: 20,                    // Space from left
+  endIndent: 20,                 // Space from right
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>height:</strong> Total vertical space the divider occupies (includes line + space)<br/>
+                        <strong>thickness:</strong> How thick the actual line is (default is very thin, ~1px)<br/>
+                        <strong>color:</strong> Color of the line<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">Colors.grey</code> - Default grey<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">Colors.deepPurple[100]</code> - Light shade of deepPurple (100=very light, 900=very dark)<br/>
+                        <strong>indent:</strong> Empty space on the left side<br/>
+                        <strong>endIndent:</strong> Empty space on the right side<br/>
+                        <strong>Why use indent:</strong> Creates a divider that doesn't span full width
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📦 Container Widget - Deep Dive</h3>
+
+                <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">What is Container?</h4>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Container</strong> is the Swiss Army knife of Flutter widgets. It combines common painting, positioning, and sizing widgets into one convenient package.
+                    </p>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        Think of it as a box that can be styled, positioned, and sized in many ways.
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">padding vs margin</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Container(
+  padding: EdgeInsets.all(15),   // Space INSIDE (around child)
+  margin: EdgeInsets.symmetric(vertical: 8),  // Space OUTSIDE
+  child: Text('Content'),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>padding:</strong> Internal spacing - creates space between container's edge and its child<br/>
+                        <strong>margin:</strong> External spacing - creates space between container and surrounding widgets<br/>
+                        <strong>EdgeInsets.all(15):</strong> 15 pixels on all sides<br/>
+                        <strong>EdgeInsets.symmetric(vertical: 8):</strong> 8 pixels top and bottom, 0 left and right<br/>
+                        <strong>Analogy:</strong> padding = cushioning inside a box, margin = space between boxes
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">decoration - BoxDecoration</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>Container(
+  decoration: BoxDecoration(
+    color: Colors.deepPurple[50],           // Background color
+    borderRadius: BorderRadius.circular(10), // Rounded corners
+    border: Border.all(color: Colors.grey),  // Border around container
+    boxShadow: [                            // Drop shadow
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.3),
+        blurRadius: 5,
+        offset: Offset(2, 2),
+      ),
+    ],
+  ),
+  child: Text('Styled Content'),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>decoration:</strong> Paints decoration behind the child<br/>
+                        <strong>BoxDecoration:</strong> Provides painting features like color, borders, shadows<br/>
+                        <strong>color:</strong> Background color (can't use both Container.color and decoration.color)<br/>
+                        <strong>borderRadius.circular(10):</strong> All corners have 10px radius (makes rounded)<br/>
+                        <strong>Border.all():</strong> Creates border on all sides<br/>
+                        <strong>boxShadow:</strong> List of shadows (can have multiple)<br/>
+                        <strong>blurRadius:</strong> How soft/spread out the shadow is<br/>
+                        <strong>Offset(2, 2):</strong> Shadow position (x: right 2px, y: down 2px)
+                    </p>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                    <h4 style="margin-top: 0; color: #16a34a;">Complete Example</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.7em; margin: 10px 0;"><code>Container(
+  decoration: BoxDecoration(
+    color: Colors.deepPurple[50],
+    borderRadius: BorderRadius.circular(10),
+  ),
+  padding: EdgeInsets.all(15),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    children: [
+      Icon(Icons.email, color: Colors.deepPurple),
+      SizedBox(width: 20),
+      Text('your.email@example.com'),
+    ],
+  ),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        This creates a rounded, light purple container with an icon and text, perfect for contact information!
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎯 Key Takeaways</h4>
+                <p style="margin: 5px 0;">✅ <strong>Divider:</strong> Horizontal line separator with customizable appearance</p>
+                <p style="margin: 5px 0;">✅ <strong>Container:</strong> All-in-one widget for styling, spacing, and positioning</p>
+                <p style="margin: 5px 0;">✅ <strong>padding:</strong> Inside spacing, <strong>margin:</strong> Outside spacing</p>
+                <p style="margin: 5px 0;">✅ <strong>BoxDecoration:</strong> Adds color, borders, shadows, rounded corners</p>
+            </div>
+        </div>
+
+        <!-- Slide 18 -->
+        <div class="slide">
+            <h2>Widgets We'll Use: Row & Icon</h2>
+
+            <p>Row arranges widgets horizontally, and Icon displays Material Design icons - perfect for creating contact information rows.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>↔️ Row Widget</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">What is Row?</h4>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Row</strong> is a layout widget that arranges its children in a horizontal line (left to right). It's like items sitting side by side on a shelf.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Row(
+  children: [
+    Icon(Icons.email),
+    SizedBox(width: 20),
+    Text('email@example.com'),
+  ],
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        This creates: [Icon] [space] [Text] arranged horizontally
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Row Properties</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Row(
+  mainAxisAlignment: MainAxisAlignment.start,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.email),
+    Text('Email'),
+  ],
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>children:</strong> List of widgets to display horizontally (required)<br/>
+                        <strong>mainAxisAlignment:</strong> How to arrange children along horizontal axis<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">start</code> - Left side (default)<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">center</code> - Centered<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">spaceBetween</code> - Space between items<br/>
+                        <strong>crossAxisAlignment:</strong> How to align children vertically<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">center</code> - Vertically centered (common)<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">start</code> - Top aligned<br/>
+                        <strong>mainAxisSize:</strong> How much horizontal space to take<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">max</code> - Take all available width<br/>
+                        • <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">min</code> - Take only needed width
+                    </p>
+                </div>
+
+                <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <h4 style="margin-top: 0; color: #2563eb;">Remember: Row Axis</h4>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        For Row:<br/>
+                        • <strong>Main Axis</strong> = Horizontal (left to right) ↔️<br/>
+                        • <strong>Cross Axis</strong> = Vertical (top to bottom) ↕️<br/>
+                        <br/>
+                        This is opposite of Column where Main Axis is vertical!
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🎨 Icon Widget</h3>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">What is Icon?</h4>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Icon</strong> displays a graphical symbol from Material Design icons. Flutter includes 1000+ built-in icons ready to use.
+                    </p>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Icon(Icons.email)  // Simple email icon</code></pre>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0;">Icon Properties</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.85em; margin: 10px 0;"><code>Icon(
+  Icons.email,              // The icon to display
+  color: Colors.deepPurple, // Icon color
+  size: 24,                 // Icon size in pixels
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>First parameter:</strong> The icon from Icons class (required)<br/>
+                        <strong>color:</strong> Color of the icon (default is black or theme color)<br/>
+                        <strong>size:</strong> Size in logical pixels (default is 24)<br/>
+                        • 16-20 = small<br/>
+                        • 24 = default/standard<br/>
+                        • 32-48 = large<br/>
+                        • 80+ = extra large (like in CircleAvatar)
+                    </p>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                    <h4 style="margin-top: 0; color: #16a34a;">Common Icons for Contact Card</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Icons.person       // Person silhouette
+Icons.email        // Envelope
+Icons.phone        // Phone handset
+Icons.location_on  // Location pin
+Icons.work         // Briefcase
+Icons.home         // House
+Icons.link         // Chain link (for websites)
+Icons.message      // Chat bubble</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        <strong>Finding icons:</strong> Visit Flutter Icons Gallery or type "Icons." in your editor for autocomplete
+                    </p>
+                </div>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h4 style="margin-top: 0; color: #dc2626;">Complete Contact Row Example</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>Container(
+  decoration: BoxDecoration(
+    color: Colors.deepPurple[50],
+    borderRadius: BorderRadius.circular(10),
+  ),
+  padding: EdgeInsets.all(15),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    children: [
+      Icon(
+        Icons.email,
+        color: Colors.deepPurple,
+        size: 24,
+      ),
+      SizedBox(width: 20),
+      Text(
+        'your.email@example.com',
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.grey[800],
+        ),
+      ),
+    ],
+  ),
+)</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0;">
+                        This creates a styled container with an email icon and email text arranged horizontally - perfect for our Contact Card!
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎯 Ready to Build!</h4>
+                <p style="margin: 5px 0;">✅ <strong>Row:</strong> Arranges widgets horizontally</p>
+                <p style="margin: 5px 0;">✅ <strong>Icon:</strong> Displays Material Design icons</p>
+                <p style="margin: 5px 0;">✅ <strong>Pattern:</strong> Container → Row → [Icon + Space + Text]</p>
+                <p style="margin: 5px 0;">✅ You now know all the widgets needed for the Contact Card!</p>
+            </div>
+        </div>
+
+        <!-- Slide 19 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 1: Cleaning the Default Code</h2>
+
+            <p>Let's transform the default counter app into a professional Contact Card page. We'll start by removing unnecessary code and understanding why each removal is important.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🗑️ Step 1: Remove the Counter State</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #dc2626;">❌ Remove This Code:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>int _counter = 0;
+
+void _incrementCounter() {
+  setState(() {
+    _counter++;
+  });
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why remove this?</strong><br/>
+                        • The Contact Card is static - no interactive counting needed<br/>
+                        • We don't need state management for displaying fixed information<br/>
+                        • Removing unused code keeps our app clean and maintainable
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🗑️ Step 2: Remove the Counter Display Widgets</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #dc2626;">❌ Remove From body:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: &lt;Widget&gt;[
+    const Text('You have pushed the button this many times:'),
+    Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
+  ],
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why remove this?</strong><br/>
+                        • This Column displays counter-specific content<br/>
+                        • We'll replace it with our Contact Card content<br/>
+                        • The Center widget can stay - we'll use it to center our card
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🗑️ Step 3: Remove the Floating Action Button</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #dc2626;">❌ Remove This Property:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>floatingActionButton: FloatingActionButton(
+  onPressed: _incrementCounter,
+  tooltip: 'Increment',
+  child: const Icon(Icons.add),
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why remove this?</strong><br/>
+                        • A Contact Card doesn't need an increment button<br/>
+                        • Removes visual clutter from our professional card design<br/>
+                        • FloatingActionButton is for primary actions - we don't need one here
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 Summary</h4>
+                <p style="margin: 5px 0;">We've removed all counter-related code because:</p>
+                <p style="margin: 5px 0;">✅ Contact Cards are <strong>static</strong> - they display information, not interactive state</p>
+                <p style="margin: 5px 0;">✅ Simpler code is easier to understand and maintain</p>
+                <p style="margin: 5px 0;">✅ We're left with a clean Scaffold structure ready for our content</p>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 2: Converting to StatelessWidget</h2>
+
+            <p>Since our Contact Card doesn't need to manage any changing state, we should convert it from a StatefulWidget to a StatelessWidget.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🔄 Step 4: Why Convert to StatelessWidget?</h3>
+
+                <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #2563eb;">Understanding Widget Types</h4>
+                    <ul style="font-size: 0.9em; line-height: 1.8;">
+                        <li><strong>StatefulWidget:</strong> Used when data changes over time (like counters, forms, animations)</li>
+                        <li><strong>StatelessWidget:</strong> Used for static content that never changes</li>
+                    </ul>
+                    <p style="font-size: 0.9em; margin: 15px 0 5px 0;">
+                        <strong>Benefits of using StatelessWidget for our Contact Card:</strong>
+                    </p>
+                    <ul style="font-size: 0.9em; line-height: 1.8;">
+                        <li>✅ <strong>Better Performance:</strong> No need to manage state lifecycle</li>
+                        <li>✅ <strong>Simpler Code:</strong> Just one class instead of two</li>
+                        <li>✅ <strong>Clear Intent:</strong> Shows this widget won't change</li>
+                        <li>✅ <strong>Less Memory:</strong> No State object to maintain</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🔄 The Conversion Process</h3>
+
+                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #dc2626;">❌ Remove the StatefulWidget Structure:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+
+  @override
+  State&lt;MyHomePage&gt; createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State&lt;MyHomePage&gt; {
+  // build method here
+}</code></pre>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Replace with StatelessWidget:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>class ContactCard extends StatelessWidget {
+  const ContactCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Content will go here
+    );
+  }
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Key Changes:</strong><br/>
+                        • Renamed from <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">MyHomePage</code> to <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">ContactCard</code> (descriptive name)<br/>
+                        • Changed from <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">StatefulWidget</code> to <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">StatelessWidget</code><br/>
+                        • Removed the <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">title</code> parameter (we'll hardcode our info)<br/>
+                        • build() method moved directly into the widget class<br/>
+                        • No separate State class needed
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎯 Progress Check</h4>
+                <p style="margin: 5px 0;">We now have a clean, simple StatelessWidget ready for our Contact Card content!</p>
+                <p style="margin: 5px 0;">Next: We'll add the actual contact card UI components</p>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 3: Adding the Card Structure</h2>
+
+            <p>Now let's add the UI components for our professional Contact Card. We'll build it step by step, explaining each widget's purpose.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📦 Step 5: Add the Card Widget</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add Card Inside Center:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>body: Center(
+  child: Card(
+    elevation: 8,
+    margin: EdgeInsets.all(20),
+    child: Padding(
+      padding: EdgeInsets.all(40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Content goes here
+        ],
+      ),
+    ),
+  ),
+)</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why each widget?</strong><br/>
+                        • <strong>Center:</strong> Centers the card horizontally and vertically on screen<br/>
+                        • <strong>Card:</strong> Material Design card with shadow for depth<br/>
+                        • <strong>elevation: 8:</strong> Creates shadow depth (higher = more shadow)<br/>
+                        • <strong>margin:</strong> Space around the card from screen edges<br/>
+                        • <strong>Padding:</strong> Internal spacing so content doesn't touch card edges<br/>
+                        • <strong>Column:</strong> Stacks widgets vertically (profile, name, title, etc.)<br/>
+                        • <strong>mainAxisSize.min:</strong> Card only takes space it needs (not full height)
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>👤 Step 6: Add Profile Image</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add CircleAvatar:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>CircleAvatar(
+  radius: 60,
+  backgroundColor: Colors.deepPurple,
+  child: Icon(
+    Icons.person,
+    size: 80,
+    color: Colors.white,
+  ),
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why this approach?</strong><br/>
+                        • <strong>CircleAvatar:</strong> Built-in widget for circular profile pictures<br/>
+                        • <strong>radius: 60:</strong> Sets the size (diameter = 120 pixels)<br/>
+                        • <strong>backgroundColor:</strong> Purple background (matches Material theme)<br/>
+                        • <strong>Icon(Icons.person):</strong> Generic person icon (can replace with real image later)<br/>
+                        • <strong>size: 80:</strong> Makes icon large and prominent<br/>
+                        • <strong>color: Colors.white:</strong> White icon on purple background (good contrast)
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">💡 Design Principle</h4>
+                <p style="margin: 5px 0;">We're using Material Design components that provide:</p>
+                <p style="margin: 5px 0;">✅ Professional, polished appearance</p>
+                <p style="margin: 5px 0;">✅ Consistent behavior across platforms</p>
+                <p style="margin: 5px 0;">✅ Built-in accessibility features</p>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 4: Adding Text Information</h2>
+
+            <p>Let's add your professional information with proper spacing and styling.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>✍️ Step 7: Add Your Name</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add After CircleAvatar:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>SizedBox(height: 20),
+Text(
+  'Your Name',
+  style: TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+    color: Colors.deepPurple,
+  ),
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why each property?</strong><br/>
+                        • <strong>SizedBox(height: 20):</strong> Adds vertical spacing between avatar and name<br/>
+                        • <strong>fontSize: 28:</strong> Large, prominent text for your name<br/>
+                        • <strong>fontWeight.bold:</strong> Makes name stand out as the most important info<br/>
+                        • <strong>color: deepPurple:</strong> Matches theme for visual consistency
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>💼 Step 8: Add Your Job Title</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add Job Title:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>SizedBox(height: 8),
+Text(
+  'Flutter Developer',
+  style: TextStyle(
+    fontSize: 20,
+    color: Colors.grey[700],
+    letterSpacing: 1.5,
+  ),
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why this styling?</strong><br/>
+                        • <strong>SizedBox(height: 8):</strong> Smaller gap (title is related to name)<br/>
+                        • <strong>fontSize: 20:</strong> Smaller than name (creates hierarchy)<br/>
+                        • <strong>Colors.grey[700]:</strong> Muted color (less emphasis than name)<br/>
+                        • <strong>letterSpacing: 1.5:</strong> Spreads letters for elegant, professional look
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📏 Step 9: Add a Divider</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add Visual Separator:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>SizedBox(height: 20),
+Divider(
+  height: 20,
+  thickness: 2,
+  color: Colors.deepPurple[100],
+),
+SizedBox(height: 20),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Purpose of divider?</strong><br/>
+                        • <strong>Divider:</strong> Horizontal line that separates header from contact info<br/>
+                        • <strong>height: 20:</strong> Total vertical space the divider occupies<br/>
+                        • <strong>thickness: 2:</strong> Makes line visible but not overwhelming<br/>
+                        • <strong>color: deepPurple[100]:</strong> Light purple (subtle, matches theme)<br/>
+                        • Creates clear visual sections in the card
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎨 Design Hierarchy</h4>
+                <p style="margin: 5px 0;">Notice how we create visual hierarchy:</p>
+                <p style="margin: 5px 0;">1️⃣ Avatar (largest, most visual)</p>
+                <p style="margin: 5px 0;">2️⃣ Name (bold, large, colored)</p>
+                <p style="margin: 5px 0;">3️⃣ Title (smaller, muted)</p>
+                <p style="margin: 5px 0;">4️⃣ Divider (separates sections)</p>
+            </div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 5: Contact Information</h2>
+
+            <p>Let's add reusable contact information rows with icons for email and phone.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📧 Step 10: Create Contact Info Widget</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add Reusable Contact Row:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>Container(
+  decoration: BoxDecoration(
+    color: Colors.deepPurple[50],
+    borderRadius: BorderRadius.circular(10),
+  ),
+  padding: EdgeInsets.all(15),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    children: [
+      Icon(
+        Icons.email,
+        color: Colors.deepPurple,
+        size: 24,
+      ),
+      SizedBox(width: 20),
+      Text(
+        'your.email@example.com',
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.grey[800],
+        ),
+      ),
+    ],
+  ),
+),</code></pre>
+                    <p style="font-size: 0.85em; margin: 10px 0; line-height: 1.8;">
+                        <strong>Breaking down the structure:</strong><br/>
+                        • <strong>Container:</strong> Wrapper that allows decoration and spacing<br/>
+                        • <strong>BoxDecoration:</strong> Adds background color and rounded corners<br/>
+                        • <strong>deepPurple[50]:</strong> Very light purple background (subtle highlight)<br/>
+                        • <strong>borderRadius.circular(10):</strong> Rounds the corners (modern look)<br/>
+                        • <strong>padding:</strong> Space inside the container around content<br/>
+                        • <strong>margin.symmetric(vertical: 8):</strong> Space between contact rows<br/>
+                        • <strong>Row:</strong> Arranges icon and text horizontally<br/>
+                        • <strong>Icon:</strong> Visual indicator of contact type<br/>
+                        • <strong>SizedBox(width: 20):</strong> Space between icon and text
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📱 Step 11: Add Phone Number</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Add Phone Contact Row:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.75em; margin: 10px 0;"><code>Container(
+  decoration: BoxDecoration(
+    color: Colors.deepPurple[50],
+    borderRadius: BorderRadius.circular(10),
+  ),
+  padding: EdgeInsets.all(15),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    children: [
+      Icon(
+        Icons.phone,
+        color: Colors.deepPurple,
+        size: 24,
+      ),
+      SizedBox(width: 20),
+      Text(
+        '+1 (123) 456-7890',
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.grey[800],
+        ),
+      ),
+    ],
+  ),
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why duplicate structure?</strong><br/>
+                        • Creates visual consistency between contact methods<br/>
+                        • User instantly recognizes the pattern<br/>
+                        • Same styling = professional, cohesive design<br/>
+                        • Only the icon and text change (Icons.phone vs Icons.email)
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">✨ Complete!</h4>
+                <p style="margin: 5px 0;">You now have a professional Contact Card with:</p>
+                <p style="margin: 5px 0;">✅ Profile avatar</p>
+                <p style="margin: 5px 0;">✅ Name and title with proper hierarchy</p>
+                <p style="margin: 5px 0;">✅ Visual divider</p>
+                <p style="margin: 5px 0;">✅ Email and phone with icons</p>
+                <p style="margin: 5px 0;">✅ Consistent, professional styling</p>
+            </div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide">
+            <h2>Building a Contact Card Page - Part 6: Final Touches</h2>
+
+            <p>Let's add the finishing touches to make your Contact Card perfect.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🎨 Step 12: Update the AppBar</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Customize AppBar:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>appBar: AppBar(
+  title: Text(
+    'My Contact Card',
+    style: TextStyle(color: Colors.white),
+  ),
+  backgroundColor: Colors.deepPurple,
+  centerTitle: true,
+  elevation: 4,
+),</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why these properties?</strong><br/>
+                        • <strong>title:</strong> Shows clear purpose of the page<br/>
+                        • <strong>TextStyle(color: white):</strong> White text on purple background<br/>
+                        • <strong>backgroundColor:</strong> Matches our theme color (deepPurple)<br/>
+                        • <strong>centerTitle: true:</strong> Centers the title (looks more polished)<br/>
+                        • <strong>elevation: 4:</strong> Subtle shadow separates AppBar from content
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>🎯 Step 13: Update MyApp Widget</h3>
+
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #16a34a;">✅ Point to ContactCard:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Contact Card App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+        useMaterial3: true,
+      ),
+      home: const ContactCard(),
+    );
+  }
+}</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Key updates:</strong><br/>
+                        • <strong>title:</strong> Updated to reflect our app purpose<br/>
+                        • <strong>debugShowCheckedModeBanner: false:</strong> Removes "DEBUG" banner (cleaner look)<br/>
+                        • <strong>home: ContactCard():</strong> Changed from MyHomePage to our new widget<br/>
+                        • <strong>Theme remains:</strong> Keeps consistent purple color scheme
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3>📱 Step 14: Add Background Color (Optional)</h3>
+
+                <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #2563eb;">💡 Optional Enhancement:</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;"><code>return Scaffold(
+  backgroundColor: Colors.grey[100],
+  appBar: AppBar(
+    // ... appBar code
+  ),
+  body: Center(
+    // ... body code
+  ),
+);</code></pre>
+                    <p style="font-size: 0.9em; margin: 10px 0;">
+                        <strong>Why add background color?</strong><br/>
+                        • <strong>Colors.grey[100]:</strong> Very light grey background<br/>
+                        • Makes the white Card stand out more (better contrast)<br/>
+                        • Gives depth to the design (card appears to float)<br/>
+                        • More visually interesting than plain white
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 20px; border-radius: 10px; color: white;">
+                <h4 style="margin-top: 0; color: white;">🎓 What You've Learned</h4>
+                <p style="margin: 5px 0; line-height: 1.8;">
+                    ✅ How to clean up default Flutter code<br/>
+                    ✅ When to use StatelessWidget vs StatefulWidget<br/>
+                    ✅ Material Design widgets (Card, CircleAvatar, Divider)<br/>
+                    ✅ Layout widgets (Column, Row, Container, Center)<br/>
+                    ✅ Styling with TextStyle and BoxDecoration<br/>
+                    ✅ Creating visual hierarchy and spacing<br/>
+                    ✅ Building a complete, professional UI from scratch
+                </p>
+            </div>
+        </div>
     </div>
 
     <div class="slide-counter">
-        <span id="current-slide">1</span> / <span id="total-slides">9</span>
+        <span id="current-slide">1</span> / <span id="total-slides">24</span>
     </div>
 
     <div class="navigation">
